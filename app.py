@@ -8,7 +8,6 @@ import numpy as np
 from PIL import Image
 from models import db, User, Feedback
 from ai_edge_litert.interpreter import Interpreter
-from train import fine_tune_model
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
 
@@ -297,6 +296,7 @@ def admin():
 
 @app.route('/admin/fine_tune', methods=['POST'])
 def fine_tune():
+    from train import fine_tune_model
     user = get_current_user()
 
     if user is None or not user.isAdmin:
