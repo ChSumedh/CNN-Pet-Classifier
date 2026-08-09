@@ -1,5 +1,5 @@
 streamlit
-tensorflow>=2.18,<2.22
+tensorflow
 numpy
 pillow
 h5py
