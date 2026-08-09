@@ -1,0 +1,203 @@
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    background-image: url('/static/images/cat_dog.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    font-family: sans-serif;
+}
+
+#heading {
+    text-align: center;
+    margin-top: 5vh;
+}
+
+#heading a {
+    text-decoration: none;
+}
+
+#heading h1 {
+    margin: 0;
+
+    color: #fff;
+    font-size: 2.5rem;
+    font-weight: 600;
+
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+
+    transition: transform 0.2s ease-in;
+}
+
+#heading h1:hover {
+    transform: scale(1.05);
+}
+
+#admin {
+    flex: 1;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 30px 20px 10vh;
+}
+
+#adminBox {
+    width: min(500px, 85%);
+
+    padding: 40px;
+
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
+
+    background: rgba(255, 255, 255, 0.15);
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.25);
+
+    box-sizing: border-box;
+
+    text-align: center;
+}
+
+#adminBox h2 {
+    margin: 0 0 30px;
+
+    color: #fff;
+    font-size: 1.8rem;
+
+    text-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.option {
+    margin-bottom: 25px;
+    padding: 20px;
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 15px;
+
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.option h3 {
+    margin: 0 0 8px;
+
+    color: #fff;
+}
+
+.option p {
+    margin: 0 0 15px;
+
+    color: #fff;
+
+    font-size: 0.9rem;
+
+    text-shadow:
+        0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.option a {
+    text-decoration: none;
+}
+
+button {
+    padding: 11px 25px;
+
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.2);
+
+    color: #fff;
+
+    font-size: 1rem;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease-in,
+        background 0.2s ease-in;
+}
+
+button:hover {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.35);
+}
+
+#logout {
+    margin-top: 20px;
+}
+
+#logout a {
+    color: #fff;
+
+    text-decoration: none;
+
+    font-size: 0.9rem;
+
+    text-shadow:
+        0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+#logout a:hover {
+    opacity: 0.7;
+}
+
+@media (max-width: 600px) {
+
+    #heading h1 {
+        font-size: 2rem;
+    }
+
+    #adminBox {
+        width: 90%;
+        padding: 30px 20px;
+    }
+}
+
+#flash {
+    text-align: center;
+    color: #ff6b6b;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.option input[type="text"] {
+    padding: 10px 15px;
+    margin-bottom: 12px;
+    width: 100%;
+    max-width: 220px;
+
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    outline: none;
+
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.option input[type="text"]::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.option form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

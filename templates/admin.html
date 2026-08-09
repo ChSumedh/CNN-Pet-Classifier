@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+
+    <title>Admin Panel</title>
+</head>
+
+    <body>
+
+        <div id="heading">
+            <a href="{{ url_for('model') }}">
+                <h1>Cat Dog Classification</h1>
+            </a>
+        </div>
+
+        <div id="admin">
+
+            <div id="adminBox">
+
+            <h2>Admin Panel</h2>
+
+            <div id="flash">
+                {% set messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="option">
+            <h3>Fine Tune Model</h3>
+
+            <p>
+                Retrain the model using corrected predictions
+                submitted by users.
+            </p>
+
+            <p>Feedback available: {{ feedback_count }}</p>
+
+            <form method="POST" action="{{ url_for('fine_tune') }}">
+                <button type="submit">Fine Tune Model</button>
+            </form>
+            </div>
+
+            <div class="option">
+            <h3>Promote User</h3>
+
+            <p>
+                Give an existing user administrator privileges.
+            </p>
+
+            <form method="POST" action="{{ url_for('promote_user') }}">
+                <input type="text" name="username" placeholder="Username" required>
+                <button type="submit">Promote</button>
+            </form>
+            </div>
+
+            <div id="logout">
+            <a href="{{ url_for('logout') }}">Logout</a>
+            </div>
+
+        </div>
+
+    </div>
+
+    </body>
+
+</html>

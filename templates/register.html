@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='register.css') }}">
+
+    <title>Register - Cat Dog Classification</title>
+</head>
+
+<body>
+
+    <div id="heading">
+        <a href="{{ url_for('home') }}">
+            <h1>Cat Dog Classification</h1>
+        </a>
+    </div>
+
+    <div id="register">
+
+        <form method="POST"
+              action="{{ url_for('verifyRegistration') }}">
+
+            <div id="username">
+                <label>Username</label>
+                <input type="text"
+                       name="username"
+                       required>
+            </div>
+
+            <div id="pwd">
+                <label>Password</label>
+                <input type="password"
+                       name="password"
+                       required>
+            </div>
+
+            <div id="pwd2">
+                <label>Confirm Password</label>
+                <input type="password"
+                       name="password2"
+                       required>
+            </div>
+
+            <div id="submit">
+                <input type="submit" value="Register">
+            </div>
+
+        </form>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div id="flash">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div id="login">
+            <a href="{{ url_for('login') }}">
+                Already have an account? Login
+            </a>
+        </div>
+
+    </div>
+
+</body>
+</html>

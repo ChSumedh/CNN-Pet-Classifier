@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='correct.css') }}">
+
+    <title>Correct Prediction</title>
+</head>
+
+<body>
+
+    <div id="heading">
+        <a href="{{ url_for('model') }}">
+            <h1>Cat Dog Classification</h1>
+        </a>
+    </div>
+
+    <div id="correction">
+
+        <div id="correctionBox">
+
+            <h2>Help Improve the Model</h2>
+
+            <p>
+                Think the prediction is wrong?
+                Select the correct breed below.
+            </p>
+
+            <img
+                id="imagePreview"
+                src="data:image/jpeg;base64,{{ image }}"
+                alt="Uploaded image"
+            >
+
+            <form action="{{ url_for('submit_correction') }}" method="POST">
+
+                <input
+                    type="hidden"
+                    name="feedback_id"
+                    value="{{ feedback_id }}"
+                >
+
+                <label for="correct_class">
+                    Correct Breed
+                </label>
+
+                <select id="correct_class" name="correct_class" required>
+
+                    {% for class in classes %}
+                        <option value="{{ class }}">
+                            {{ class }}
+                        </option>
+                    {% endfor %}
+
+                </select>
+
+                <input
+                    type="submit"
+                    value="Submit Correction"
+                >
+
+            </form>
+
+            <div id="back">
+                <a href="{{ url_for('model') }}">
+                    Back to Model
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

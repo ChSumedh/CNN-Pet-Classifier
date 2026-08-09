@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='model.css') }}">
+
+    <title>Cat Dog Classification</title>
+</head>
+
+<body>
+
+    <div id="heading">
+        <a href="{{ url_for('home') }}">
+            <h1>Cat Dog Classification</h1>
+        </a>
+    </div>
+
+    <div id="model">
+
+        <form method="POST"
+              action="{{ url_for('prediction') }}"
+              enctype="multipart/form-data">
+
+            <label for="image">
+                Select an image
+            </label>
+
+            <input type="file"
+                   id="image"
+                   name="image"
+                   accept="image/*"
+                   required>
+
+            <input type="submit" value="Predict">
+
+        </form>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div id="flash">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <a id="logout" href="{{ url_for('logout') }}">
+            Logout
+        </a>
+
+    </div>
+
+</body>
+</html>

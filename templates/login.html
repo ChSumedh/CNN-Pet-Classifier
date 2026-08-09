@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='login.css') }}">
+
+    <title>Login - Cat Dog Classification</title>
+</head>
+
+<body>
+
+    <div id="heading">
+        <a href="{{ url_for('home') }}">
+            <h1>Cat Dog Classification</h1>
+        </a>
+    </div>
+
+    <div id="login">
+
+        <form method="POST" action="{{ url_for('split') }}">
+
+            <div id="username">
+                <label>Username</label>
+                <input type="text" required name="username">
+            </div>
+
+            <div id="pwd">
+                <label>Password</label>
+                <input type="password" required name="password">
+            </div>
+
+            <div id="submit">
+                <input type="submit" value="Submit">
+            </div>
+
+        </form>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div id="flash">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div id="register">
+            <a href="{{ url_for('register') }}">
+                Have no account? Register Here
+            </a>
+        </div>
+
+    </div>
+
+</body>
+</html>

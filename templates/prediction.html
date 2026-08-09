@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='prediction.css') }}">
+
+    <title>Prediction - Cat Dog Classification</title>
+</head>
+
+<body style="
+    background-image: url('data:image/jpeg;base64,{{ image }}');
+">
+
+    <div id="heading">
+        <a href="{{ url_for('home') }}">
+            <h1>Cat Dog Classification</h1>
+        </a>
+    </div>
+
+    <div id="prediction">
+
+        <div class="result">
+            <p>Predicted Breed</p>
+            <h2>{{ classes[output] }}</h2>
+        </div>
+
+        <div class="actions">
+            <a href="{{ url_for('model') }}">Try Another Image</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+
+        <div id="correction">
+            <p>Do you think this prediction is wrong?</p>
+
+            <a href="{{ url_for('correct_prediction', feedback_id=feedback_id) }}">
+                Help improve the model
+            </a>
+        </div>
+
+    </div>
+
+</body>
+</html>

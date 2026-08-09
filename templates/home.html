@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='home.css') }}">
+
+    <title>Cat Dog Classification</title>
+</head>
+
+<body>
+
+    <div id="heading">
+        <a href="{% if session.get('user_id') %}
+                    {{ url_for('model') }}
+                 {% else %}
+                    {{ url_for('login') }}
+                 {% endif %}">
+            <h1>Cat Dog Classification</h1>
+        </a>
+    </div>
+
+    <div id="main">
+
+        {% if session.get('user_id') %}
+
+            <div class="glass-box">
+                <p>You are logged in.</p>
+
+                <a class="button" href="{{ url_for('model') }}">
+                    Classify an Image
+                </a>
+
+                <a class="logout" href="{{ url_for('logout') }}">
+                    Logout
+                </a>
+            </div>
+
+        {% else %}
+
+            <div class="glass-box">
+                <a class="button" href="{{ url_for('login') }}">
+                    Login
+                </a>
+
+                <a class="register" href="{{ url_for('register') }}">
+                    Don't have an account? Register
+                </a>
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</body>
+</html>
