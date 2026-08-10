@@ -1,4 +1,7 @@
 import io
+import gc
+import os
+
 import numpy as np
 import tensorflow as tf
 from PIL import Image
@@ -15,57 +18,130 @@ CLASSES = [
     'wheaten_terrier', 'yorkshire_terrier'
 ]
 
-CLASS_MAP = {name: idx for idx, name in enumerate(CLASSES)}
+CLASS_MAP = {name: i for i, name in enumerate(CLASSES)}
+
 IMG_SIZE = (224, 224)
 
 
-def build_dataset(feedbacks):
-    images = []
-    labels = []
+def fine_tune_model(keras_model_path, feedbacks, epochs=1):
 
-    for fb in feedbacks:
-        img = Image.open(io.BytesIO(fb.image)).convert('RGB')
-        img = img.resize(IMG_SIZE)
-        img_array = np.array(img, dtype=np.float32) / 255.0
-        images.append(img_array)
-        labels.append(CLASS_MAP[fb.correct_class])
+    model = None
 
-    x = np.array(images, dtype=np.float32)
-    y = np.array(labels, dtype=np.int32)
-    return x, y
-
-
-def fine_tune_model(keras_model_path, feedbacks, epochs=5):
-    """
-    Returns (success: bool, new_model_paths: tuple or None, error: str or None)
-    """
     try:
-        x, y = build_dataset(feedbacks)
+        if not feedbacks:
+            return False, None, "No feedback available"
 
-        if len(x) == 0:
-            return False, None, "No usable feedback (correct_class didn't match any known class)"
+        tf.keras.backend.clear_session()
+        gc.collect()
 
-        model = tf.keras.models.load_model(keras_model_path)
+        print("Loading model...")
+
+        model = tf.keras.models.load_model(
+            keras_model_path,
+            compile=False
+        )
+
+        print("Model loaded")
+
+        # Freeze everything
+        for layer in model.layers:
+            layer.trainable = False
+
+        # Only train the final layer
+        model.layers[-1].trainable = True
 
         model.compile(
-            optimizer=tf.keras.optimizers.Adam(learning_rate=1e-5),
+            optimizer=tf.keras.optimizers.Adam(
+                learning_rate=1e-5
+            ),
             loss='sparse_categorical_crossentropy',
             metrics=['accuracy']
         )
 
-        model.fit(x, y, epochs=epochs, batch_size=8)
+        for fb in feedbacks:
 
-        new_keras_path = 'new_model.keras'
-        model.save(new_keras_path)
+            if fb.correct_class not in CLASS_MAP:
+                continue
 
-        converter = tf.lite.TFLiteConverter.from_keras_model(model)
+            print("Processing feedback:", fb.id)
+
+            img = Image.open(
+                io.BytesIO(fb.image)
+            ).convert('RGB')
+
+            img = img.resize(IMG_SIZE)
+
+            x = np.asarray(
+                img,
+                dtype=np.float32
+            ) / 255.0
+
+            x = np.expand_dims(x, axis=0)
+
+            y = np.array(
+                [CLASS_MAP[fb.correct_class]],
+                dtype=np.int32
+            )
+
+            print("Training on one image...")
+
+            model.fit(
+                x,
+                y,
+                epochs=epochs,
+                batch_size=1,
+                verbose=1
+            )
+
+            del x
+            del y
+            del img
+
+            gc.collect()
+
+        print("Saving Keras model...")
+
+        new_keras_path = "new_model.keras"
+
+        model.save(
+            new_keras_path
+        )
+
+        print("Converting to TFLite...")
+
+        gc.collect()
+
+        converter = tf.lite.TFLiteConverter.from_keras_model(
+            model
+        )
+
         tflite_model = converter.convert()
 
-        new_tflite_path = 'new_model.tflite'
-        with open(new_tflite_path, 'wb') as f:
+        new_tflite_path = "new_model.tflite"
+
+        with open(
+            new_tflite_path,
+            "wb"
+        ) as f:
             f.write(tflite_model)
 
-        return True, (new_keras_path, new_tflite_path), None
+        print("Fine tuning complete")
+
+        return True, (
+            new_keras_path,
+            new_tflite_path
+        ), None
 
     except Exception as e:
+
+        print("Fine tuning error:", e)
+
         return False, None, str(e)
+
+    finally:
+
+        if model is not None:
+            del model
+
+        tf.keras.backend.clear_session()
+        gc.collect()
