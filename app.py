@@ -51,6 +51,11 @@ def load_interpreter():
     input_details = interpreter.get_input_details()
     output_details = interpreter.get_output_details()
 
+def unload_interpreter():
+    global interpreter, input_details, output_details
+    interpreter = None
+    input_details = None
+    output_details = None
 
 load_interpreter()
 
@@ -183,7 +188,6 @@ def preprocess_image(file, target_size=(224, 224)):
 
 @app.route('/prediction', methods=['POST'])
 def prediction():
-
     if 'user_id' not in session:
         return redirect(url_for('login'))
 
@@ -206,7 +210,7 @@ def prediction():
         return redirect(url_for('model'))
 
     image_array = preprocess_image(image_bytes)
-
+    
     interpreter.set_tensor(
         input_details[0]['index'],
         image_array
@@ -310,9 +314,11 @@ def fine_tune():
         flash('No corrected feedback available to train on')
         return redirect(url_for('admin'))
 
+    unload_interpreter()
     success, paths, error = fine_tune_model(KERAS_MODEL_PATH, feedbacks)
-
+    
     if not success:
+        load_interpreter()
         flash(f'Fine-tuning failed: {error}')
         return redirect(url_for('admin'))
 
@@ -322,7 +328,6 @@ def fine_tune():
     shutil.move(new_tflite_path, TFLITE_MODEL_PATH)
 
     load_interpreter()
-
     feedback_ids = [fb.id for fb in feedbacks]
     Feedback.query.filter(Feedback.id.in_(feedback_ids)).delete(synchronize_session=False)
     db.session.commit()
