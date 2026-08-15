@@ -2,6 +2,8 @@
 
 A full-stack web app that identifies a pet's breed from a photo — 37 breeds total (25 dog breeds + 12 cat breeds) — trained on the Oxford-IIIT Pet Dataset. Beyond just serving predictions, it includes a **feedback loop**: users can flag wrong predictions, admins can review corrections, and the model can be **fine-tuned live on that corrected data** — right from the admin dashboard.
 
+Deployed on **Render** — https://cnn-pet-classifier-4v9p.onrender.com
+
 ## ✨ What it does
 
 - **Predicts breed from an uploaded image** using a transfer-learned EfficientNetB0 CNN, served via TensorFlow Lite for fast inference
